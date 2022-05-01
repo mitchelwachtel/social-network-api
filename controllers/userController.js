@@ -55,7 +55,7 @@ module.exports = {
       .then((user) =>
         !user
           ? res.status(404).json({message: "No such user exists"})
-          : Thought.findAll({username: user.username}).remove().exec()
+          : Thought.deleteMany({username: user.username})
       )
       .then((thought) =>
         !thought
