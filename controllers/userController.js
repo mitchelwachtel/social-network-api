@@ -1,8 +1,7 @@
-// ObjectId() method for converting studentId string into an ObjectId for querying database
 const {ObjectId} = require("mongoose").Types;
 const {User, Thought} = require("../models");
 
-// TODO: Create an aggregate function to get the number of students overall
+// Aggregate function to get the number of users overall
 const totalUsers = async () =>
   User.aggregate([{$count: "numberOfUsers"}])
     // Your code here
@@ -24,7 +23,7 @@ module.exports = {
         return res.status(500).json(err);
       });
   },
-  // Get a single student
+  // Get a single user
   getSingleUser(req, res) {
     User.findOne({_id: req.params.userId})
       .populate("friends")
