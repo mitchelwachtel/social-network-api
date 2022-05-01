@@ -1,6 +1,8 @@
 const {ObjectId} = require("mongoose").Types;
 const {User, Thought} = require("../models");
 
+console.log(typeof User); 
+
 // Aggregate function to get the number of users overall
 const totalUsers = async () =>
   User.aggregate([{$count: "numberOfUsers"}])

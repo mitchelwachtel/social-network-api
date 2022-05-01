@@ -1,4 +1,7 @@
-const { User, Thought } = require('../models');
+const {ObjectId} = require("mongoose").Types;
+const {Thought} = require('../models');
+
+console.log(typeof Thought); 
 
 module.exports = {
   // Get all thoughts
