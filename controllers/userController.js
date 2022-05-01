@@ -11,7 +11,7 @@ module.exports = {
   // Get all users
   getUsers(req, res) {
     User.find()
-      .then(async (students) => {
+      .then(async (users) => {
         const userObj = {
           users,
           headCount: await totalUsers(),
@@ -25,13 +25,13 @@ module.exports = {
   },
   // Get a single user
   getSingleUser(req, res) {
-    User.findOne({_id: req.params.userId})
+    User.findOne({_id: ObjectId(req.params.userId)})
       .populate("friends")
       .populate("thoughts")
       .then((user) =>
         !user
-          ? res.status(404).json({message: "No post with that ID"})
-          : res.json(post)
+          ? res.status(404).json({message: "No user with that ID"})
+          : res.json(user)
       )
       .catch((err) => {
         console.log(err);
