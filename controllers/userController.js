@@ -8,38 +8,8 @@ const totalUsers = async () =>
     // Your code here
     .then((numberOfUsers) => numberOfUsers);
 
-// Execute the aggregate method on the Student model and calculate the overall grade by using the $avg operator
-const grade = async (studentId) =>
-  Student.aggregate(
-    [
-      // TODO: Ensure we include only the student who can match the given ObjectId using the $match operator
-      {
-        // Your code here
-        $match: {_id: ObjectId(studentId)},
-      },
-      {
-        $unwind: "$assignments",
-      },
-      // TODO: Group information for the student with the given ObjectId alongside an overall grade calculated using the $avg operator
-      {
-        // Your code here
-        $group: {
-          _id: ObjectId(studentId),
-          overallGrade: {$avg: "$assignments.score"},
-        },
-      },
-    ],
-    (err, result) => {
-      if (err) {
-        res.status(500).send(err);
-      } else {
-        return result;
-      }
-    }
-  );
-
 module.exports = {
-  // Get all students
+  // Get all users
   getUsers(req, res) {
     User.find()
       .then(async (students) => {
@@ -69,21 +39,19 @@ module.exports = {
         return res.status(500).json(err);
       });
   },
-  // create a new student
+  // create a new user
   createUser(req, res) {
     User.create(req.body)
       .then((user) => res.json(user))
       .catch((err) => res.status(500).json(err));
   },
-  // Delete a student and remove them from the course
+  // Delete a user and remove associated thoughts
   deleteUser(req, res) {
     User.findOneAndRemove({_id: req.params.userId})
       .then((user) =>
         !user
           ? res.status(404).json({message: "No such user exists"})
-          : Thought.findAll(
-              {username: user.username},
-            ).remove().exec()
+          : Thought.findAll({username: user.username}).remove().exec()
       )
       .then((thought) =>
         !thought
@@ -98,7 +66,7 @@ module.exports = {
       });
   },
 
-  // Add an assignment to a student
+  // Add a friend to a user
   addFriend(req, res) {
     console.log("You are adding an friend");
     console.log(req.body);
@@ -114,7 +82,7 @@ module.exports = {
       )
       .catch((err) => res.status(500).json(err));
   },
-  // Remove assignment from a student
+  // Remove a friend from a user
   removeFriend(req, res) {
     User.findOneAndUpdate(
       {_id: req.params.userId},
