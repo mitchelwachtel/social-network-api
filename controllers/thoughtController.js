@@ -1,5 +1,5 @@
 const {ObjectId} = require("mongoose").Types;
-const {Thought} = require('../models');
+const {Thought, User} = require('../models');
 
 console.log(typeof Thought); 
 
@@ -23,7 +23,13 @@ module.exports = {
   },
   // Create a thought
   createThought(req, res) {
-    Thought.create(req.body)
+    Thought.create(req.body).then((thought) => {
+      return User.findOneAndUpdate(
+        { _id: req.body.userId },
+        { $addToSet: { thoughts: thought._id } },
+        { new: true }
+      );
+    })
       .then((thought) => res.json(thought))
       .catch((err) => {
         console.log(err);

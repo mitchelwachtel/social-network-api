@@ -1,5 +1,4 @@
 const {Schema, model, isEmail} = require("mongoose");
-const {Thought} = require("./Thought");
 
 // Schema to create User model
 const userSchema = new Schema(
@@ -16,8 +15,8 @@ const userSchema = new Schema(
       unique: true,
       // validate: [isEmail, "invalid email"],
     },
-    thoughts: [{type: Schema.Types.ObjectId, ref: "Thought"}],
-    friends: [{type: Schema.Types.ObjectId, ref: this}],
+    thoughts: [{type: Schema.Types.ObjectId, ref: "thought"}],
+    friends: [{type: Schema.Types.ObjectId, ref: "user"}],
   },
   {
     toJSON: {
