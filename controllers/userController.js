@@ -1,12 +1,9 @@
 const {ObjectId} = require("mongoose").Types;
 const {User, Thought} = require("../models");
 
-console.log(typeof User);
-
 // Aggregate function to get the number of users overall
 const totalUsers = async () =>
   User.aggregate([{$count: "numberOfUsers"}])
-    // Your code here
     .then((numberOfUsers) => numberOfUsers);
 
 module.exports = {
@@ -89,8 +86,6 @@ module.exports = {
 
   // Add a friend to a user
   addFriend(req, res) {
-    console.log("You are adding an friend");
-    console.log(req.body);
     User.findOneAndUpdate(
       {_id: ObjectId(req.params.userId)},
       {$addToSet: {friends: {_id: ObjectId(req.params.friendId)}}},
